@@ -972,6 +972,75 @@ def generate_pdf_with_reportlab(orcamento: dict, empresa: dict, materiais: list 
         c.drawString(20*mm, y, line)
         y -= 5*mm
     
+    # Materiais (se houver)
+    if materiais and len(materiais) > 0:
+        y -= 10*mm
+        c.setFont("Helvetica-Bold", 14)
+        c.drawString(20*mm, y, "MATERIAIS UTILIZADOS")
+        y -= 10*mm
+        
+        # Cabeçalho da tabela
+        c.setFont("Helvetica-Bold", 9)
+        c.drawString(20*mm, y, "Item")
+        c.drawString(70*mm, y, "Unid.")
+        c.drawString(90*mm, y, "Qtd.")
+        c.drawString(110*mm, y, "Preço Unit.")
+        c.drawString(140*mm, y, "Total")
+        y -= 5*mm
+        
+        # Linha separadora
+        c.setStrokeColor(HexColor('#CCCCCC'))
+        c.line(20*mm, y, width - 20*mm, y)
+        y -= 5*mm
+        
+        # Listar materiais
+        c.setFont("Helvetica", 9)
+        total_materiais = 0
+        for material in materiais:
+            # Verificar se precisa de nova página
+            if y < 50*mm:
+                c.showPage()
+                y = height - 30*mm
+                c.setFont("Helvetica", 9)
+            
+            # Item (com quebra de linha se necessário)
+            nome_item = material.get('nome_item', '')
+            if len(nome_item) > 30:
+                nome_item = nome_item[:27] + "..."
+            c.drawString(20*mm, y, nome_item)
+            
+            # Unidade
+            c.drawString(70*mm, y, material.get('unidade', ''))
+            
+            # Quantidade
+            c.drawString(90*mm, y, f"{material.get('quantidade', 0):.2f}")
+            
+            # Preço unitário final (formatado)
+            preco_unit = material.get('preco_unitario_final', 0)
+            preco_unit_fmt = f"R$ {preco_unit:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+            c.drawString(110*mm, y, preco_unit_fmt)
+            
+            # Total do item (formatado)
+            total_item = material.get('preco_total_item', 0)
+            total_item_fmt = f"R$ {total_item:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+            c.drawString(140*mm, y, total_item_fmt)
+            
+            total_materiais += total_item
+            y -= 5*mm
+        
+        # Linha separadora
+        y -= 2*mm
+        c.setStrokeColor(HexColor('#CCCCCC'))
+        c.line(20*mm, y, width - 20*mm, y)
+        y -= 5*mm
+        
+        # Total de materiais
+        c.setFont("Helvetica-Bold", 10)
+        total_mat_fmt = f"R$ {total_materiais:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+        c.drawString(110*mm, y, "TOTAL MATERIAIS:")
+        c.drawString(140*mm, y, total_mat_fmt)
+        y -= 5*mm
+    
     # Valores
     y -= 10*mm
     c.setFont("Helvetica-Bold", 14)
