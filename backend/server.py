@@ -877,13 +877,16 @@ async def update_orcamento_status(orcamento_id: str, status_data: OrcamentoStatu
     
     return {"message": f"Status atualizado para {status_data.status}!"}
 
-def generate_pdf_with_reportlab(orcamento: dict, empresa: dict) -> bytes:
+def generate_pdf_with_reportlab(orcamento: dict, empresa: dict, materiais: list = None) -> bytes:
     """Fallback: Gerar PDF usando ReportLab (sem dependências do sistema)"""
     from reportlab.lib.pagesizes import A4
     from reportlab.lib.units import mm
     from reportlab.pdfgen import canvas as pdf_canvas
     from reportlab.lib.colors import HexColor
     from datetime import datetime as dt
+    
+    if materiais is None:
+        materiais = []
     
     buffer = BytesIO()
     c = pdf_canvas.Canvas(buffer, pagesize=A4)
