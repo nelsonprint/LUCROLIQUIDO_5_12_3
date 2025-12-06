@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, FileText, Target, Calculator, CreditCard, Shield, LogOut, BookOpen, Receipt, ChevronDown, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, FileText, Target, Calculator, CreditCard, Shield, LogOut, BookOpen, Receipt, ChevronDown, ChevronRight, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const Sidebar = ({ user, onLogout, onOpenGlossary }) => {
