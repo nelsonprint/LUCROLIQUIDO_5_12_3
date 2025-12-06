@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { axiosInstance } from '../App';
 import { toast } from 'sonner';
-import { Download, MessageCircle, ArrowLeft, CheckCircle, XCircle } from 'lucide-react';
+import { Download, MessageCircle, ArrowLeft, CheckCircle, XCircle, Edit2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const OrcamentoDetalhe = ({ user, onLogout }) => {
