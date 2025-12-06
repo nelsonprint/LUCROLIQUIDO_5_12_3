@@ -1280,6 +1280,153 @@ async def share_orcamento_pdf(token: str):
             }
         )
 
+# ========== ENDPOINTS: MATERIAIS ==========
+
+@api_router.post("/materiais")
+async def create_material(material_data: MaterialCreate):
+    """Criar novo material no catálogo"""
+    material = Material(**material_data.model_dump())
+    
+    doc = material.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['updated_at'] = doc['updated_at'].isoformat()
+    await db.materiais.insert_one(doc)
+    
+    return {"message": "Material criado com sucesso!", "material_id": material.id}
+
+@api_router.get("/materiais")
+async def get_materiais():
+    """Listar todos os materiais cadastrados"""
+    materiais = await db.materiais.find({}, {"_id": 0}).sort("nome_item", 1).to_list(1000)
+    return materiais
+
+@api_router.get("/materiais/buscar")
+async def buscar_materiais(q: str):
+    """Buscar materiais por nome (autocomplete)"""
+    materiais = await db.materiais.find(
+        {"nome_item": {"$regex": q, "$options": "i"}},
+        {"_id": 0}
+    ).limit(20).to_list(None)
+    return materiais
+
+@api_router.get("/materiais/{material_id}")
+async def get_material_detail(material_id: str):
+    """Buscar detalhes de um material específico"""
+    material = await db.materiais.find_one({"id": material_id}, {"_id": 0})
+    
+    if not material:
+        raise HTTPException(status_code=404, detail="Material não encontrado")
+    
+    return material
+
+@api_router.put("/materiais/{material_id}")
+async def update_material(material_id: str, material_data: MaterialCreate):
+    """Atualizar material"""
+    update_doc = material_data.model_dump()
+    update_doc['updated_at'] = datetime.now(timezone.utc).isoformat()
+    
+    result = await db.materiais.update_one(
+        {"id": material_id},
+        {"$set": update_doc}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Material não encontrado")
+    
+    return {"message": "Material atualizado com sucesso!"}
+
+@api_router.delete("/materiais/{material_id}")
+async def delete_material(material_id: str):
+    """Deletar material do catálogo"""
+    result = await db.materiais.delete_one({"id": material_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Material não encontrado")
+    
+    return {"message": "Material excluído com sucesso!"}
+
+# ========== ENDPOINTS: MATERIAIS NO ORÇAMENTO ==========
+
+@api_router.post("/orcamentos/{orcamento_id}/materiais")
+async def add_material_to_orcamento(orcamento_id: str, material_data: OrcamentoMaterialCreate):
+    """Adicionar material ao orçamento"""
+    # Verificar se o orçamento existe
+    orcamento = await db.orcamentos.find_one({"id": orcamento_id}, {"_id": 0})
+    
+    if not orcamento:
+        raise HTTPException(status_code=404, detail="Orçamento não encontrado")
+    
+    # Calcular valores
+    preco_unitario_final = material_data.preco_compra_fornecedor * (1 + (material_data.percentual_acrescimo / 100))
+    preco_total_item = preco_unitario_final * material_data.quantidade
+    
+    # Criar OrcamentoMaterial
+    orcamento_material = OrcamentoMaterial(
+        id_orcamento=orcamento_id,
+        id_material=material_data.id_material,
+        nome_item=material_data.nome_item,
+        descricao_customizada=material_data.descricao_customizada,
+        unidade=material_data.unidade,
+        preco_compra_fornecedor=material_data.preco_compra_fornecedor,
+        percentual_acrescimo=material_data.percentual_acrescimo,
+        preco_unitario_final=preco_unitario_final,
+        quantidade=material_data.quantidade,
+        preco_total_item=preco_total_item
+    )
+    
+    doc = orcamento_material.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.orcamento_materiais.insert_one(doc)
+    
+    # Se id_material não existe (material novo), criar material no catálogo
+    if not material_data.id_material:
+        novo_material = Material(
+            nome_item=material_data.nome_item,
+            descricao=material_data.descricao_customizada,
+            unidade=material_data.unidade,
+            preco_compra_base=material_data.preco_compra_fornecedor
+        )
+        material_doc = novo_material.model_dump()
+        material_doc['created_at'] = material_doc['created_at'].isoformat()
+        material_doc['updated_at'] = material_doc['updated_at'].isoformat()
+        await db.materiais.insert_one(material_doc)
+    
+    return {
+        "message": "Material adicionado ao orçamento com sucesso!",
+        "orcamento_material_id": orcamento_material.id,
+        "preco_unitario_final": preco_unitario_final,
+        "preco_total_item": preco_total_item
+    }
+
+@api_router.get("/orcamentos/{orcamento_id}/materiais")
+async def get_orcamento_materiais(orcamento_id: str):
+    """Listar materiais de um orçamento"""
+    materiais = await db.orcamento_materiais.find(
+        {"id_orcamento": orcamento_id},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Calcular total de materiais
+    total_materiais = sum(m['preco_total_item'] for m in materiais)
+    
+    return {
+        "materiais": materiais,
+        "total_materiais": total_materiais
+    }
+
+@api_router.delete("/orcamentos/{orcamento_id}/materiais/{orcamento_material_id}")
+async def remove_material_from_orcamento(orcamento_id: str, orcamento_material_id: str):
+    """Remover material do orçamento"""
+    result = await db.orcamento_materiais.delete_one({
+        "id": orcamento_material_id,
+        "id_orcamento": orcamento_id
+    })
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Material não encontrado no orçamento")
+    
+    return {"message": "Material removido do orçamento com sucesso!"}
+
 @api_router.post("/ai-analysis")
 async def ai_analysis(data: dict):
     try:
