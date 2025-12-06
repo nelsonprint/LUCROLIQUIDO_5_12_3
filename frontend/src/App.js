@@ -169,6 +169,16 @@ function App() {
           }
         />
         <Route
+          path="/materiais"
+          element={
+            user ? (
+              <Materiais user={user} onLogout={handleLogout} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
           path="/assinatura"
           element={
             user ? (
