@@ -1190,6 +1190,6 @@ class SystemAuditTest:
             return False
 
 if __name__ == "__main__":
-    tester = MaterialsModuleTest()
-    success = tester.run_all_tests()
+    tester = SystemAuditTest()
+    success = tester.run_complete_audit()
     sys.exit(0 if success else 1)
