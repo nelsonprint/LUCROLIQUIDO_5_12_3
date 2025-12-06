@@ -1276,6 +1276,12 @@ async def share_orcamento_pdf(token: str):
     if not empresa:
         empresa = {"name": "Empresa"}
     
+    # Buscar materiais do orçamento
+    materiais = await db.orcamento_materiais.find(
+        {"id_orcamento": orcamento['id']},
+        {"_id": 0}
+    ).to_list(1000)
+    
     # Gerar PDF
     try:
         from weasyprint import HTML
