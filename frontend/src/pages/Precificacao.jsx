@@ -20,6 +20,7 @@ const Precificacao = ({ user, onLogout }) => {
   const [tipoCobrancaServico, setTipoCobrancaServico] = useState('por-m2');
   const [showOrcamentoModal, setShowOrcamentoModal] = useState(false);
   const [loadingOrcamento, setLoadingOrcamento] = useState(false);
+  const [totalMateriais, setTotalMateriais] = useState(0);
   const navigate = useNavigate();
 
   const company = JSON.parse(localStorage.getItem('company') || '{}');
