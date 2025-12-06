@@ -590,6 +590,12 @@ class SystemAuditTest:
         """Teste CRUD completo de orçamentos"""
         self.log("=== TESTE: ORÇAMENTOS CRUD COMPLETO ===")
         
+        # Garantir que temos uma empresa
+        if not self.empresa_id:
+            if not self.test_get_empresa():
+                self.test_results["orcamentos_crud"] = "❌ FALHOU - Sem empresa"
+                return False
+        
         try:
             # 1. Criar orçamento
             orcamento_data = {
