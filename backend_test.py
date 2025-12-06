@@ -22,6 +22,9 @@ class SystemAuditTest:
         self.orcamento_id = None
         self.materiais_criados = []
         self.orcamento_materiais = []
+        self.contas_criadas = []
+        self.transactions_criadas = []
+        self.test_results = {}
         
     def log(self, message, status="INFO"):
         timestamp = datetime.now().strftime("%H:%M:%S")
