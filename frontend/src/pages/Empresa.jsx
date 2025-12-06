@@ -35,39 +35,78 @@ const Empresa = ({ user, onLogout }) => {
     contato_principal: '',
   });
 
-  const company = JSON.parse(localStorage.getItem('company') || '{}');
+  const [company, setCompany] = useState(JSON.parse(localStorage.getItem('company') || '{}'));
 
   useEffect(() => {
     fetchCompanyData();
   }, []);
 
   const fetchCompanyData = async () => {
-    if (!company.id) return;
-
+    setLoadingData(true);
+    
     try {
-      const response = await axiosInstance.get(`/company/${company.id}`);
-      setFormData({
-        name: response.data.name || '',
-        segment: response.data.segment || '',
-        razao_social: response.data.razao_social || '',
-        nome_fantasia: response.data.nome_fantasia || '',
-        cnpj: response.data.cnpj || '',
-        inscricao_estadual: response.data.inscricao_estadual || '',
-        inscricao_municipal: response.data.inscricao_municipal || '',
-        logradouro: response.data.logradouro || '',
-        numero: response.data.numero || '',
-        complemento: response.data.complemento || '',
-        bairro: response.data.bairro || '',
-        cidade: response.data.cidade || '',
-        estado: response.data.estado || '',
-        cep: response.data.cep || '',
-        telefone_fixo: response.data.telefone_fixo || '',
-        celular_whatsapp: response.data.celular_whatsapp || '',
-        email_empresa: response.data.email_empresa || '',
-        site: response.data.site || '',
-        contato_principal: response.data.contato_principal || '',
-      });
+      // Se não há empresa no localStorage, buscar do backend
+      if (!company.id) {
+        const companiesResponse = await axiosInstance.get(`/companies/${user.id}`);
+        if (companiesResponse.data && companiesResponse.data.length > 0) {
+          const companyData = companiesResponse.data[0];
+          localStorage.setItem('company', JSON.stringify(companyData));
+          setCompany(companyData);
+          
+          // Preencher formulário com dados da empresa
+          setFormData({
+            name: companyData.name || '',
+            segment: companyData.segment || '',
+            razao_social: companyData.razao_social || '',
+            nome_fantasia: companyData.nome_fantasia || '',
+            cnpj: companyData.cnpj || '',
+            inscricao_estadual: companyData.inscricao_estadual || '',
+            inscricao_municipal: companyData.inscricao_municipal || '',
+            logradouro: companyData.logradouro || '',
+            numero: companyData.numero || '',
+            complemento: companyData.complemento || '',
+            bairro: companyData.bairro || '',
+            cidade: companyData.cidade || '',
+            estado: companyData.estado || '',
+            cep: companyData.cep || '',
+            telefone_fixo: companyData.telefone_fixo || '',
+            celular_whatsapp: companyData.celular_whatsapp || '',
+            email_empresa: companyData.email_empresa || '',
+            site: companyData.site || '',
+            contato_principal: companyData.contato_principal || '',
+          });
+        } else {
+          // Nenhuma empresa encontrada - deixar formulário vazio para criar nova
+          setLoadingData(false);
+          return;
+        }
+      } else {
+        // Já tem empresa no localStorage, buscar dados atualizados
+        const response = await axiosInstance.get(`/company/${company.id}`);
+        setFormData({
+          name: response.data.name || '',
+          segment: response.data.segment || '',
+          razao_social: response.data.razao_social || '',
+          nome_fantasia: response.data.nome_fantasia || '',
+          cnpj: response.data.cnpj || '',
+          inscricao_estadual: response.data.inscricao_estadual || '',
+          inscricao_municipal: response.data.inscricao_municipal || '',
+          logradouro: response.data.logradouro || '',
+          numero: response.data.numero || '',
+          complemento: response.data.complemento || '',
+          bairro: response.data.bairro || '',
+          cidade: response.data.cidade || '',
+          estado: response.data.estado || '',
+          cep: response.data.cep || '',
+          telefone_fixo: response.data.telefone_fixo || '',
+          celular_whatsapp: response.data.celular_whatsapp || '',
+          email_empresa: response.data.email_empresa || '',
+          site: response.data.site || '',
+          contato_principal: response.data.contato_principal || '',
+        });
+      }
     } catch (error) {
+      console.error('Erro ao carregar empresa:', error);
       toast.error('Erro ao carregar dados da empresa');
     } finally {
       setLoadingData(false);
