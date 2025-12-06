@@ -913,6 +913,12 @@ class SystemAuditTest:
         """Teste CRUD de contas a pagar/receber"""
         self.log("=== TESTE: CONTAS A PAGAR/RECEBER ===")
         
+        # Garantir que temos uma empresa
+        if not self.empresa_id:
+            if not self.test_get_empresa():
+                self.test_results["contas_crud"] = "❌ FALHOU - Sem empresa"
+                return False
+        
         try:
             # 1. Criar conta a pagar
             conta_pagar_data = {
