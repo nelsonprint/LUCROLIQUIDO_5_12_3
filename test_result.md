@@ -250,6 +250,42 @@ backend:
           agent: "testing"
           comment: "✅ Sistema de atualização de status funcionando. PATCH /api/orcamento/{id}/status atualizando corretamente os status (RASCUNHO -> ENVIADO -> APROVADO/NAO_APROVADO). Timestamps sendo registrados adequadamente."
 
+  - task: "Módulo de Materiais no Orçamento"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ TESTE COMPLETO APROVADO (100% sucesso): Criação de orçamento com 3 materiais diferentes (Tinta R$ 85,50 +40%, Cimento R$ 32,00 +35%, Areia R$ 95,00 +30%), cálculos corretos (preço_final = preço_compra × (1 + percentual/100) × quantidade), total de materiais R$ 1.277,50 somado corretamente. PDF gerado com 2.770 bytes (>2000), formato válido, terminação correta. Link WhatsApp retorna pdf_url, whatsapp_url, token, expires_in. PDF público acessível via token, tamanhos compatíveis. Todas as validações passaram."
+
+  - task: "API de Materiais"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ APIs de materiais funcionando: POST /api/materiais (criar), GET /api/materiais (listar), GET /api/materiais/buscar (autocomplete), PUT /api/materiais/{id} (atualizar), DELETE /api/materiais/{id} (deletar). APIs de materiais no orçamento: POST /api/orcamentos/{id}/materiais (adicionar), GET /api/orcamentos/{id}/materiais (listar com total), DELETE /api/orcamentos/{id}/materiais/{material_id} (remover)."
+
+  - task: "Link Público de PDF com Token"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "testing"
+          comment: "✅ Funcionalidade de compartilhamento público funcionando: POST /api/orcamento/{id}/whatsapp gera token único com expiração de 24h. GET /api/orcamento/share/{token} retorna PDF válido. Token salvo no banco com expiração. Verificação de validade do token implementada. PDF público idêntico ao PDF direto."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
