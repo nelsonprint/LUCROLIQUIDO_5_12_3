@@ -241,6 +241,16 @@ const Orcamentos = ({ user, onLogout }) => {
                               <Button
                                 size="sm"
                                 variant="outline"
+                                onClick={() => navigate(`/orcamento/${orcamento.id}/editar`)}
+                                className="border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
+                                title="Editar"
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              
+                              <Button
+                                size="sm"
+                                variant="outline"
                                 onClick={() => handleDownloadPDF(orcamento.id, orcamento.numero_orcamento)}
                                 className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
                                 title="Baixar PDF"
