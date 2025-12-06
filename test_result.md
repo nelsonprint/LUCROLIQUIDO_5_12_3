@@ -360,17 +360,25 @@ backend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 1
-  run_ui: true
+  version: "2.0"
+  test_sequence: 2
+  run_ui: false
+  audit_complete: true
+  deploy_approved: true
 
 test_plan:
   current_focus:
-    - "Módulo completo de Orçamentos testado"
-    - "Módulo de Materiais no Orçamento testado"
+    - "Auditoria completa do sistema finalizada"
+    - "Todas as APIs principais validadas"
   stuck_tasks: []
   test_all: true
-  test_priority: "high_first"
+  test_priority: "deploy_ready"
+  audit_results:
+    total_tests: 10
+    passed_tests: 10
+    failed_tests: 0
+    success_rate: "100%"
+    deploy_status: "APROVADO"
 
 agent_communication:
     - agent: "testing"
