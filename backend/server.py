@@ -1353,7 +1353,7 @@ async def share_orcamento_pdf(token: str):
     except (OSError, ImportError) as e:
         # Fallback: usar ReportLab
         logger.warning(f"WeasyPrint não disponível, usando ReportLab: {str(e)}")
-        pdf_bytes = generate_pdf_with_reportlab(orcamento, empresa)
+        pdf_bytes = generate_pdf_with_reportlab(orcamento, empresa, materiais)
         
         return StreamingResponse(
             BytesIO(pdf_bytes),
