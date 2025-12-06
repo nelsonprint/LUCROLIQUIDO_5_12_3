@@ -35,6 +35,7 @@ const OrcamentoMateriais = ({ orcamentoId, onTotalChange }) => {
     if (orcamentoId) {
       fetchMateriaisOrcamento();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orcamentoId]);
 
   // Filtrar catálogo quando buscar
