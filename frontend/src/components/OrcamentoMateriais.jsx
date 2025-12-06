@@ -76,15 +76,6 @@ const OrcamentoMateriais = ({ orcamentoId, onTotalChange }) => {
     }
   };
 
-  const fetchMateriaisOrcamento = async () => {
-    try {
-      const response = await axiosInstance.get(`/orcamentos/${orcamentoId}/materiais`);
-      setMateriais(response.data.materiais || []);
-    } catch (error) {
-      console.error('Erro ao carregar materiais do orçamento:', error);
-    }
-  };
-
   const handleSelectMaterialCatalogo = (material) => {
     setNovoMaterial({
       ...novoMaterial,
