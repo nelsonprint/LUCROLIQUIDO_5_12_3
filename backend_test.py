@@ -1013,6 +1013,12 @@ class SystemAuditTest:
         """Teste CRUD de lançamentos"""
         self.log("=== TESTE: LANÇAMENTOS (TRANSACTIONS) ===")
         
+        # Garantir que temos uma empresa
+        if not self.empresa_id:
+            if not self.test_get_empresa():
+                self.test_results["transactions_crud"] = "❌ FALHOU - Sem empresa"
+                return False
+        
         try:
             # 1. Criar lançamento de receita
             transaction_receita = {
