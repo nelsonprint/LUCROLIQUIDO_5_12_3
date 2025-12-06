@@ -13,6 +13,7 @@ import { Calculator, DollarSign, TrendingUp, Users, Truck, UtensilsCrossed, Wren
 import { axiosInstance } from '../App';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
+import OrcamentoMateriais from '@/components/OrcamentoMateriais';
 
 const Precificacao = ({ user, onLogout }) => {
   const [tipoPrecificacao, setTipoPrecificacao] = useState('produto');
