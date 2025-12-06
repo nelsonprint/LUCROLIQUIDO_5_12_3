@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Teste Completo do Módulo de Materiais - Sistema Lucro Líquido
-Testa toda a funcionalidade do módulo de materiais integrado ao sistema de orçamentos.
+AUDITORIA COMPLETA DO SISTEMA PARA DEPLOY - Sistema Lucro Líquido
+Testa TODAS as APIs principais para garantir deploy seguro.
 """
 
 import requests
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Configuração
 BASE_URL = "https://budget-materials-1.preview.emergentagent.com/api"
