@@ -1476,6 +1476,14 @@ const Precificacao = ({ user, onLogout }) => {
               </div>
             </div>
 
+            {/* Seção de Materiais */}
+            <div className="space-y-4">
+              <OrcamentoMateriais 
+                orcamentoId={null}
+                onTotalChange={(total) => setTotalMateriais(total)}
+              />
+            </div>
+
             {/* Resumo do Valor */}
             {(resultadoServico || resultadoProduto) && (
               <div className="p-4 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-lg border border-purple-500/30">
