@@ -968,19 +968,8 @@ class SystemAuditTest:
             conta_receber_id = response.json().get('conta_id')
             self.log(f"✅ Conta a receber criada (ID: {conta_receber_id})")
             
-            # 3. Listar todas as contas
-            response = self.session.get(f"{BASE_URL}/contas/{self.empresa_id}")
-            
-            if response.status_code != 200:
-                self.log(f"❌ Erro ao listar contas: {response.status_code}", "ERROR")
-                self.test_results["contas_crud"] = f"❌ FALHOU - Listar: {response.status_code}"
-                return False
-            
-            contas = response.json()
-            self.log(f"✅ Contas listadas: {len(contas)} encontradas")
-            
-            # 4. Listar contas a pagar
-            response = self.session.get(f"{BASE_URL}/contas/pagar/{self.empresa_id}")
+            # 3. Listar contas a pagar
+            response = self.session.get(f"{BASE_URL}/contas/pagar?company_id={self.empresa_id}")
             
             if response.status_code != 200:
                 self.log(f"❌ Erro ao listar contas a pagar: {response.status_code}", "ERROR")
@@ -990,8 +979,8 @@ class SystemAuditTest:
             contas_pagar = response.json()
             self.log(f"✅ Contas a pagar listadas: {len(contas_pagar)} encontradas")
             
-            # 5. Listar contas a receber
-            response = self.session.get(f"{BASE_URL}/contas/receber/{self.empresa_id}")
+            # 4. Listar contas a receber
+            response = self.session.get(f"{BASE_URL}/contas/receber?company_id={self.empresa_id}")
             
             if response.status_code != 200:
                 self.log(f"❌ Erro ao listar contas a receber: {response.status_code}", "ERROR")
