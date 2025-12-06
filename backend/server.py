@@ -1068,6 +1068,18 @@ def generate_pdf_with_reportlab(orcamento: dict, empresa: dict, materiais: list 
     c.drawString(20*mm, y, f"Prazo: {orcamento.get('prazo_execucao', '')}")
     y -= 5*mm
     c.drawString(20*mm, y, f"Pagamento: {orcamento.get('condicoes_pagamento', '')}")
+    y -= 15*mm
+    
+    # Linha de assinatura
+    c.setFillColor(text_color)
+    c.setFont("Helvetica", 10)
+    
+    # Linha para assinatura
+    assinatura_y = 50*mm
+    c.line(20*mm, assinatura_y, 90*mm, assinatura_y)
+    
+    # Nome da empresa abaixo da linha
+    c.drawString(20*mm, assinatura_y - 5*mm, empresa.get('razao_social') or empresa.get('name', 'EMPRESA'))
     
     # Footer
     c.setFont("Helvetica", 8)
