@@ -91,14 +91,14 @@ MERCADO_PAGO_ACCESS_TOKEN="APP_USR-6705196597871113-120123-f0a82b44af66b59779d85
 
 ### **Variáveis de Ambiente - Frontend (.env):**
 ```bash
-REACT_APP_BACKEND_URL=https://lucroliquido.preview.emergentagent.com
+REACT_APP_BACKEND_URL=https://budget-materials-1.preview.emergentagent.com
 WDS_SOCKET_PORT=443
 REACT_APP_ENABLE_VISUAL_EDITS=false
 ENABLE_HEALTH_CHECK=false
 ```
 
 ### **URLs de Acesso:**
-- Preview: `https://lucroliquido.preview.emergentagent.com`
+- Preview: `https://budget-materials-1.preview.emergentagent.com`
 - Produção: `https://lucroliquido.com/`
 - Deployment: `https://financemanager-10.emergent.host`
 
