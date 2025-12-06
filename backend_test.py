@@ -821,11 +821,16 @@ class SystemAuditTest:
         """Teste completo de materiais no orçamento"""
         self.log("=== TESTE: MATERIAIS NO ORÇAMENTO ===")
         
-        # Primeiro criar um orçamento para teste
-        if not self.orcamento_id:
-            if not self.test_create_orcamento():
-                self.test_results["materiais_orcamento"] = "❌ FALHOU - Sem orçamento"
+        # Garantir que temos uma empresa
+        if not self.empresa_id:
+            if not self.test_get_empresa():
+                self.test_results["materiais_orcamento"] = "❌ FALHOU - Sem empresa"
                 return False
+        
+        # Sempre criar um novo orçamento para este teste
+        if not self.test_create_orcamento():
+            self.test_results["materiais_orcamento"] = "❌ FALHOU - Sem orçamento"
+            return False
         
         try:
             # 1. Criar material para usar no orçamento
