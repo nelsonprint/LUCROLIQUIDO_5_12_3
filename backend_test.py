@@ -14,7 +14,7 @@ BASE_URL = "https://budget-materials-1.preview.emergentagent.com/api"
 ADMIN_EMAIL = "admin@lucroliquido.com"
 ADMIN_PASSWORD = "admin123"
 
-class MaterialsModuleTest:
+class SystemAuditTest:
     def __init__(self):
         self.session = requests.Session()
         self.user_data = None
