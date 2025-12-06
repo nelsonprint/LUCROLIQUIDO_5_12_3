@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,18 +25,27 @@ const OrcamentoMateriais = ({ orcamentoId, onTotalChange }) => {
     quantidade: '1',
   });
 
+  // Carregar materiais do orçamento (se já existir)
+  const fetchMateriaisOrcamento = useCallback(async () => {
+    try {
+      const response = await axiosInstance.get(`/orcamentos/${orcamentoId}/materiais`);
+      setMateriais(response.data.materiais || []);
+    } catch (error) {
+      console.error('Erro ao carregar materiais do orçamento:', error);
+    }
+  }, [orcamentoId]);
+
   // Carregar catálogo de materiais
   useEffect(() => {
     fetchCatalogoMateriais();
   }, []);
 
-  // Carregar materiais do orçamento (se já existir)
+  // Carregar materiais do orçamento quando o ID mudar
   useEffect(() => {
     if (orcamentoId) {
       fetchMateriaisOrcamento();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orcamentoId]);
+  }, [orcamentoId, fetchMateriaisOrcamento]);
 
   // Filtrar catálogo quando buscar
   useEffect(() => {
