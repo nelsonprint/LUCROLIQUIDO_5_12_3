@@ -160,6 +160,14 @@ const OrcamentoDetalhe = ({ user, onLogout }) => {
             <CardContent className="pt-6">
               <div className="flex flex-wrap gap-3">
                 <Button
+                  onClick={() => navigate(`/orcamento/${id}/editar`)}
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
+                  <Edit2 className="w-4 h-4 mr-2" />
+                  Editar Orçamento
+                </Button>
+                
+                <Button
                   onClick={handleDownloadPDF}
                   className="bg-blue-600 hover:bg-blue-700"
                 >
