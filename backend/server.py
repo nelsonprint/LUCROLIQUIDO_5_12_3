@@ -921,12 +921,9 @@ def generate_pdf_with_reportlab(orcamento: dict, empresa: dict, materiais: list 
             data_emissao = data_emissao.strftime("%d/%m/%Y")
         except:
             data_emissao = data_emissao[:10]
+    else:
+        data_emissao = dt.now().strftime("%d/%m/%Y")
     c.drawRightString(width - 20*mm, height - 50*mm, f"Data: {data_emissao}")
-    
-    # Status
-    status = orcamento.get('status', 'RASCUNHO')
-    status_map = {'RASCUNHO': 'Rascunho', 'ENVIADO': 'Enviado', 'APROVADO': 'Aprovado', 'NAO_APROVADO': 'Não Aprovado'}
-    c.drawRightString(width - 20*mm, height - 60*mm, status_map.get(status, status))
     
     # Dados do Cliente
     y = height - 100*mm
