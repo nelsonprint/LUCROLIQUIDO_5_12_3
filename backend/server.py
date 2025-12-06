@@ -1100,6 +1100,12 @@ async def generate_orcamento_pdf(orcamento_id: str):
     if not empresa:
         empresa = {"name": "Empresa"}
     
+    # Buscar materiais do orçamento
+    materiais = await db.orcamento_materiais.find(
+        {"id_orcamento": orcamento_id},
+        {"_id": 0}
+    ).to_list(1000)
+    
     # Tentar usar WeasyPrint primeiro (template profissional)
     try:
         from weasyprint import HTML
