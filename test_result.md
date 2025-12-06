@@ -295,6 +295,7 @@ metadata:
 test_plan:
   current_focus:
     - "Módulo completo de Orçamentos testado"
+    - "Módulo de Materiais no Orçamento testado"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
@@ -302,3 +303,5 @@ test_plan:
 agent_communication:
     - agent: "testing"
       message: "TESTE COMPLETO DO MÓDULO DE ORÇAMENTOS FINALIZADO COM SUCESSO. Todas as funcionalidades principais testadas e funcionando: login, listagem, visualização de detalhes, download PDF, envio WhatsApp, mudança de status, filtros e ações rápidas. Sistema pronto para produção. Layout responsivo com componentes Shadcn/UI renderizados corretamente. APIs backend funcionando perfeitamente conforme logs."
+    - agent: "testing"
+      message: "TESTE COMPLETO DO MÓDULO DE MATERIAIS NO ORÇAMENTO FINALIZADO COM 100% DE SUCESSO. Executados 4 testes específicos conforme solicitado: 1) Criação de orçamento com 3 materiais diferentes com cálculos corretos (Tinta +40%, Cimento +35%, Areia +30%), total R$ 1.277,50. 2) Validação de PDF com 2.770 bytes, formato válido. 3) Validação de link WhatsApp com todos os campos obrigatórios, PDF acessível, mensagem correta. 4) Acesso a PDF via link público com token funcionando perfeitamente. Todas as APIs de materiais testadas e funcionando. Sistema de compartilhamento público com expiração de 24h validado."
