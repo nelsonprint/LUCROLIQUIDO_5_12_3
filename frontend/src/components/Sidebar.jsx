@@ -24,7 +24,7 @@ export const Sidebar = ({ user, onLogout, onOpenGlossary }) => {
     { path: '/meta-mensal', icon: Target, label: 'Meta Mensal' },
     { path: '/precificacao', icon: Calculator, label: 'Precificação' },
     { path: '/orcamentos', icon: FileText, label: 'Orçamentos' },
-    { path: '/materiais', icon: BookOpen, label: 'Materiais' },
+    { path: '/materiais', icon: Package, label: 'Materiais' },
     { path: '/assinatura', icon: CreditCard, label: 'Assinatura' },
   ];
 
