@@ -934,7 +934,7 @@ class SystemAuditTest:
                 "observacoes": "Conta criada para teste de auditoria"
             }
             
-            response = self.session.post(f"{BASE_URL}/contas", json=conta_pagar_data)
+            response = self.session.post(f"{BASE_URL}/contas/pagar", json=conta_pagar_data)
             
             if response.status_code != 200:
                 self.log(f"❌ Erro ao criar conta a pagar: {response.status_code}", "ERROR")
