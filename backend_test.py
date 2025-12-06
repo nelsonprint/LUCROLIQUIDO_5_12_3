@@ -1112,6 +1112,12 @@ class SystemAuditTest:
         """Teste da API do dashboard"""
         self.log("=== TESTE: DASHBOARD API ===")
         
+        # Garantir que temos uma empresa
+        if not self.empresa_id:
+            if not self.test_get_empresa():
+                self.test_results["dashboard_api"] = "❌ FALHOU - Sem empresa"
+                return False
+        
         try:
             # Testar métricas do mês atual
             current_month = datetime.now().strftime('%Y-%m')
