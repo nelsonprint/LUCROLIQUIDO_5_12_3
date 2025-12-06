@@ -173,7 +173,7 @@ const LandingPage = ({ setUser }) => {
                   <div>
                     <h3 className="text-white font-semibold mb-1">Pare de sustentar clientes e serviços que dão prejuízo</h3>
                     <p className="text-gray-400 text-sm">
-                      Descubra quem e o quê está drenando o lucro todo mês, mesmo parecendo "bom faturamento".
+                      Descubra quem e o quê está drenando o lucro todo mês, mesmo parecendo &ldquo;bom faturamento&rdquo;.
                     </p>
                   </div>
                 </div>
